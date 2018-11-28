@@ -1,0 +1,77 @@
+#-----------------------------------------------------------------
+#==================================================================#
+#                                                                  #
+#                 Plugin by FlailoftheLord.                        #
+#        -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                   #
+#        For questions please join my discord server:              #
+#                https://discord.gg/wuxW5PS                        #
+#   ______               __        _____                           #
+#   |       |           /  \         |        |                    #
+#   |__     |          /____\        |        |                    #
+#   |       |         /      \       |        |                    #
+#   |       |_____   /        \    __|__      |______              #
+#                                                                  #
+#==================================================================#
+#-----------------------------------------------------------------
+
+
+# Plugin prefix used in messages
+# use the placeholder <prefix> in the message.
+Prefix: "&8(&e&lToaster&8)"
+
+# No Permission message, this is sent if the player doesn't have permission for the command hes trying to use :>
+# use <command> for the command name
+NoPermissionMessage: "<prefix> &cYou don't have permission to use &7/<command> &c!"
+
+# shown when you type /toaster reload to reload the plugin files
+ReloadMessage: "<prefix> &aSuccessfully reloaded toasters' configuration files!"
+
+# for these messages you may use the placeholders ->
+# <amount> for the amount of items cooked,
+# <item> for the item cooked,
+# <result> for the item that it was cooked into.
+# <exp> for the total exp gained,
+# <price> or <cost> for the total cost to cook the <amount> amount of <item>
+# <player> for the players' name.
+Cook:
+  Success: "<prefix> &ayou cooked &7<amount> &aof &e<item> &afor $&7<price>&a!"
+  DontHaveEnoughMoney: "<prefix> &cyou don't have enough money &8(&7<cost>&8) &cto cook this much &e<item>&c, try cooking a smaller quantity."
+
+# Same rules above apply to the /smelt command
+Smelt:
+  Success: "<prefix> &ayou smelted &7<amount> &aof &e<item> &afor $&7<price>&a!"
+  DontHaveEnoughMoney: "<prefix> &cyou don't have enough money &8(&7<cost>&8) &cto smelt this much &e<item>&c, try smelting a smaller quantity."
+  
+  
+# Friend section for when you are actually cruel enough to type /cook [player-name]
+#===================================================================================================#
+# Note: you need the permission  toaster.friend  to cook friends :>
+# If you don't want to insue player-violence i suggest removing this permission for regular players.
+#===================================================================================================#
+# You can use the following placeholders in addition to the ones listed above
+# <friend-name> for the name of the person you just so cruelly murdered
+# You can also change the item type it results in, get a list of the items from here:
+#    https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+Friend:
+  NameFormat: "&6&lCooked <friend-name>"
+  Lore:
+  - "&cyour good friend,"
+  - "&c<friend-name>,"
+  - "&eburnt to a crisp"
+  - "&emay he forever rest in peace..."
+  # broadcast a message to all players announcing the tragic ending of poor "insert-friend-name-here"?
+  Broadcast:
+    Enabled: true
+    Message: "<prefix> &c<player> has just toasted his friend <friend-name> to a fine crisp."
+  # This is the item that appears in your inventory once the cruel burning process is over.
+  Item: "CHARCOAL"
+  Cost: 150.0
+  Exp: 0.0
+  
+  
+  
+  
+  
+  
+  
+  

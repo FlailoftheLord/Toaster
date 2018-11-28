@@ -1,0 +1,93 @@
+# The Toaster will take over minecraft as we know it today ;)
+name: Toaster
+prefix: Toaster
+description: Toast everythin' | the Toaster made real in minecraft!
+
+# thats me :>
+author: FlailoftheLord
+website: https://www.github.com/FlailoftheLord
+
+# plugin depends on vault Economy for some features to work, 
+# it can optionally work without vault.
+# so add it as a soft-depend
+main: me.flail.Toaster.Toaster
+version: 1.6.0
+api-version: 1.13
+softdepend: [Vault]
+
+commands:
+
+  toaster:
+    usage: /toaster [reload]
+    description: main toaster command
+    aliases: []
+    
+  cook:
+    description: cook command
+    usage: /cook [player]
+    aliases: []
+    
+  smelt:
+    description: smelt command
+    usage: /smelt
+    aliases: []
+    
+  oven:
+    description: oven command
+    usage: /oven
+    
+  toast:
+    description: get some freshly baked toast!
+    usage: /toast [player]
+    
+  roast:
+    description: lol
+    usage: /roast [player]
+    
+    
+permissions:
+
+  toaster.op:
+    description: permission for everything
+    default: false
+    children:
+      toaster.cook: true
+      toaster.smelt: true
+      toaster.oven: true
+      toaster.roast: true
+      toaster.toast: true
+      toaster.reload: true 
+      toaster.cookfriend: true     
+      
+  toaster.cook:
+    description: permission to use /cook
+    default: true
+    
+  toaster.smelt:
+    description: permission to use /smelt
+    default: op
+    
+  toaster.oven:
+    description: permission to use the oven gui (/oven)
+    default: op
+    
+  toaster.reload:
+    description: permission to do /toaster reload
+    default: op
+    
+  toaster.roast:
+    description: permission to do /roast
+    default: false
+    
+  toaster.toast:
+    description: permission to do /toast
+    default: false
+    
+  toaster.cookfriend:
+    description: permission to cook friends
+    default: op
+    
+    
+    
+    
+    
