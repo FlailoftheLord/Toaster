@@ -11,7 +11,7 @@
 # FancyFood:
 #   Item: "GRASS_BLOCK"
 #   Price: 12.57
-#   Exp: 2.3
+#   Exp: 2
 #   Result: "GOLD_BLOCK"
 #================================================================================================================#
 
@@ -20,49 +20,49 @@ Cookables:
   Chicken:
     Item: "CHICKEN"
     Price: 5.0
-    Exp: 3.5
+    Exp: 3
     Result: "COOKED_CHICKEN"
   
   Mutton:
     Item: "MUTTON"
     Price: 5.0
-    Exp: 3.5
+    Exp: 3
     Result: "COOKED_MUTTON"
   
   Beef:
     Item: "BEEF"
     Price: 5.0
-    Exp: 4.5
+    Exp: 4
     Result: "COOKED_BEEF"
   
   Rabbit:
     Item: "RABBIT"
     Price: 5.0
-    Exp: 3.6
+    Exp: 3
     Result: "COOKED_RABBIT"
   
   Cod:
     Item: "COD"
     Price: 4.0
-    Exp: 2.5
+    Exp: 2
     Result: "COOKED_COD"
   
   Salmon:
     Item: "SALMON"
     Price: 4.5
-    Exp: 3.0
+    Exp: 3
     Result: "COOKED_SALMON"
   
   Potato:
     Item: "POTATO"
     Price: 6.0
-    Exp: 2.5
+    Exp: 2
     Result: "BAKED_POTATO"
     
   Pufferfish:
     Item: "PUFFERFISH"
     Price: 8.0
-    Exp: 1.0L
+    Exp: 1L
     Result: "SPONGE"
     
 # Exact same rules mentioned above apply to the smelting section!
@@ -74,49 +74,49 @@ Smeltables:
   IronOre:
     Item: "IRON_ORE"
     Price: 6.0
-    Exp: 12.0
+    Exp: 12
     Result: "IRON_INGOT"
     
   GoldOre:
     Item: "GOLD_ORE"
     Price: 7.5
-    Exp: 15.0
+    Exp: 15
     Result: "GOLD_INGOT"
     
   LapisOre:
     Item: "LAPIS_ORE"
     Price: 8.0
-    Exp: 22.0
+    Exp: 22
     Result: "LAPIS_LAZULI"
     
   RedstoneOre:
     Item: "REDSTONE_ORE"
     Price: 7.0
-    Exp: 20.0
+    Exp: 20
     Result: "REDSTONE"
     
   DiamondOre:
     Item: "DIAMOND_ORE"
     Price: 12.0
-    Exp: 26.0
+    Exp: 26
     Result: "DIAMOND"
     
   EmeraldOre:
     Item: "EMERALD_ORE"
     Price: 18.0
-    Exp: 28.0
+    Exp: 28
     Result: "EMERALD"
     
   NetherQuartzOre:
     Item: "NETHER_QUARTZ_ORE"
     Price: 20.0
-    Exp: 32.0
+    Exp: 32
     Result: "QUARTZ"
     
   Obsidian:
     Item: "OBSIDIAN"
     Price: 35.0
-    Exp: 5.0L
+    Exp: 5L
     Result: "COAL_BLOCK"
   
   
