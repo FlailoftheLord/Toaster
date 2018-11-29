@@ -45,7 +45,7 @@ Smelt:
   
 # Friend section for when you are actually cruel enough to type /cook [player-name]
 #===================================================================================================#
-# Note: you need the permission  toaster.friend  to cook friends :>
+# Note: you need the permission  toaster.cookfriend  to cook friends :>
 # If you don't want to insue player-violence i suggest removing this permission for regular players.
 #===================================================================================================#
 # You can use the following placeholders in addition to the ones listed above

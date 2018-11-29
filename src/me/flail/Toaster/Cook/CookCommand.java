@@ -9,12 +9,15 @@ import org.bukkit.entity.Player;
 
 import me.flail.Toaster.Toaster;
 import me.flail.Toaster.Tools;
+import net.milkbowl.vault.economy.Economy;
 
 public class CookCommand {
 
 	private Toaster plugin = Toaster.getPlugin(Toaster.class);
 
 	private Tools tools = plugin.tools;
+
+	private Economy eco = plugin.getEconomy();
 
 	public void Cook(CommandSender sender, String command, String[] args) {
 
