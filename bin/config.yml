@@ -54,7 +54,7 @@ Smelt:
   
 # Friend section for when you are actually cruel enough to type /cook [player-name]
 #===================================================================================================#
-# Note: you need the permission  toaster.cookfriend  to cook friends :>
+# Note: you need the permission  toaster.friend.cook  to cook friends :>
 # If you don't want to insue player-violence i suggest removing this permission for regular players.
 #===================================================================================================#
 # You can use the following placeholders in addition to the ones listed above
@@ -62,7 +62,10 @@ Smelt:
 
 # You can also change the item type it results in, get a list of the items from here:
 #    https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# Cooldown is in seconds, it defines how often the player can toast other players with /cook [player]
+# eg. 60 seconds = 1 minute.
 Friend:
+  Cooldown: 120
   NameFormat: "&6&lCooked <friend-name>"
   Lore:
   - "&cyour good friend,"
@@ -76,7 +79,7 @@ Friend:
   # This is the item that appears in your inventory once the cruel burning process is over.
   Item: "CHARCOAL"
   Cost: 150.0
-  Exp: 0.0
+  Exp: 0
   
   
   

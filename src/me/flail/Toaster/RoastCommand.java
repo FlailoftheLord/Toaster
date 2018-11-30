@@ -1,4 +1,4 @@
-package me.flail.Roast;
+package me.flail.Toaster;
 
 public class RoastCommand {
 

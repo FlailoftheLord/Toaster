@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import me.flail.Toaster.Cook.CookCommand;
+import me.flail.Toaster.Cooker.CookCommand;
 
 public class CommandHandler implements CommandExecutor {
 

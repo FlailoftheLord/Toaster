@@ -57,7 +57,7 @@ permissions:
       toaster.roast: true
       toaster.toast: true
       toaster.reload: true 
-      toaster.cookfriend: true     
+      toaster.friend: true     
       
   toaster.cook:
     description: permission to use /cook
@@ -83,9 +83,12 @@ permissions:
     description: permission to do /toast
     default: false
     
-  toaster.cookfriend:
+  toaster.friend:
     description: permission to cook friends
     default: op
+    children:
+      toaster.friend.cook: true
+      toaster.friend.bypasscooldown: true
     
     
     
