@@ -65,7 +65,10 @@ Smelt:
 # Cooldown is in seconds, it defines how often the player can toast other players with /cook [player]
 # eg. 60 seconds = 1 minute.
 Friend:
+  Success: "<prefix> &cyou just cooked your good friend, &e&l<friend-name>&c... D:"
+  TooPoor: "<prefix> &aHaha! you can't afford to cook your friend &e&l<friend-name>&a!"
   Cooldown: 120
+  CooldownMessage: "<prefix> &cyou can't cook players for another <cooldown> seconds!"
   NameFormat: "&6&lCooked <friend-name>"
   Lore:
   - "&cyour good friend,"

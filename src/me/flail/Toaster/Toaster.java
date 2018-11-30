@@ -18,6 +18,8 @@
 package me.flail.Toaster;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -25,6 +27,7 @@ import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,6 +40,8 @@ public class Toaster extends JavaPlugin {
 	public ConsoleCommandSender console = Bukkit.getConsoleSender();
 	public PluginManager plugin = Bukkit.getPluginManager();
 	public Server server = this.getServer();
+
+	public Map<Player, Integer> cooldown = new HashMap<>();
 
 	private Economy eco;
 
