@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import me.flail.Toaster.Cooker.CookCommand;
+import me.flail.Toaster.Smelter.SmeltCommand;
 
 public class CommandHandler implements CommandExecutor {
 
@@ -33,6 +34,8 @@ public class CommandHandler implements CommandExecutor {
 
 			break;
 		case "smelt":
+
+			new SmeltCommand().Smelt(sender, cmd, args);
 
 			break;
 		case "roast":

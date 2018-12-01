@@ -58,6 +58,7 @@ permissions:
       toaster.toast: true
       toaster.reload: true 
       toaster.friend: true     
+      toaster.bypasslimits: true
       
   toaster.cook:
     description: permission to use /cook

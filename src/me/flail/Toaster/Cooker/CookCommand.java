@@ -93,7 +93,22 @@ public class CookCommand {
 
 								if (!(totalCost > playerBalance)) {
 
-									if (!(totalCost > maxWithdraw)) {
+									if ((totalCost > maxWithdraw) && !player.hasPermission("toaster.op")
+											&& !player.hasPermission("toaster.bypasslimits")) {
+
+										String cantSpendThatMuch = tools.chat(config.getString("CannotSpend")
+												.replaceAll("<item>", item).replaceAll("<result>", cookedItem)
+												.replaceAll("<amount>", pItemAmount + "")
+												.replaceAll("<cost>", (totalCost) + "").replaceAll("<price>", cost + "")
+												.replaceAll("<exp>", expVariable)
+												.replaceAll("<maxWithdraw>", maxWithdraw + ""), command, player);
+
+										player.sendMessage(cantSpendThatMuch);
+
+										validItem = true;
+										break;
+
+									} else {
 
 										if (expVariable.endsWith("L")) {
 											int exp = Integer.parseInt(expVariable.replace("L", ""));
@@ -110,19 +125,6 @@ public class CookCommand {
 										player.playSound(player.getLocation(), Sound.BLOCK_FURNACE_FIRE_CRACKLE, 2, 2);
 
 										player.sendMessage(cookSuccess);
-
-										validItem = true;
-										break;
-									} else {
-
-										String cantSpendThatMuch = tools.chat(config.getString("CannotSpend")
-												.replaceAll("<item>", item).replaceAll("<result>", cookedItem)
-												.replaceAll("<amount>", pItemAmount + "")
-												.replaceAll("<cost>", (totalCost) + "").replaceAll("<price>", cost + "")
-												.replaceAll("<exp>", expVariable)
-												.replaceAll("<maxWithdraw>", maxWithdraw + ""), command, player);
-
-										player.sendMessage(cantSpendThatMuch);
 
 										validItem = true;
 										break;
@@ -314,7 +316,7 @@ public class CookCommand {
 			} else {
 
 				player.sendMessage(
-						tools.chat("<preix> &cHold your item in your hand and type &7/cook", command, player));
+						tools.chat("<prefix> &cHold your item in your hand and type &7/cook", command, player));
 				if (player.hasPermission("toaster.friend") || player.hasPermission("toaster.friend.cook")
 						|| player.hasPermission("toaster.op")) {
 					player.sendMessage(

@@ -47,7 +47,7 @@ Cook:
 
 # Same rules above apply to the /smelt command
 Smelt:
-  Success: "<prefix> &ayou smelted &7<amount> &aof &e<item> &afor $&7<price>&a!"
+  Success: "<prefix> &ayou smelted &7<amount> &aof &e<item> &afor $&7<price> &aeach!"
   InvalidItem: "<prefix> &cyou can't smelt &7<item>&c!"
   DontHaveEnoughMoney: "<prefix> &cyou don't have enough money &8(&7<cost>&8) &cto smelt this much &e<item>&c, try smelting a smaller quantity."
   
