@@ -22,6 +22,8 @@ public class CommandHandler implements CommandExecutor {
 
 		case "toaster":
 
+			new ToasterCommand().toasterCommand(sender, cmd, args);
+
 			break;
 		case "cook":
 

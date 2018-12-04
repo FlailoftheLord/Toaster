@@ -36,17 +36,10 @@ commands:
     description: oven command
     usage: /oven
     
-  toast:
-    description: get some freshly baked toast!
-    usage: /toast [player]
-    
-  roast:
-    description: lol
-    usage: /roast [player]
-    
     
 permissions:
 
+  # this basically gives you access to everything, its a very dangerous permission. >:)
   toaster.op:
     description: permission for everything
     default: false
@@ -57,7 +50,8 @@ permissions:
       toaster.roast: true
       toaster.toast: true
       toaster.reload: true 
-      toaster.friend: true     
+      toaster.friend: true    
+      # allows you to bypass the money spending limit in the config.yml 
       toaster.bypasslimits: true
       
   toaster.cook:
@@ -88,8 +82,14 @@ permissions:
     description: permission to cook friends
     default: op
     children:
+      # permission to cook players with /cook [player]
       toaster.friend.cook: true
+      # Permission to bypass the timer on how often you can cook players.
       toaster.friend.bypasscooldown: true
+      
+  toaster.command:
+    description: is necessary to use /toaster reload
+    default: true
     
     
     

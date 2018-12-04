@@ -152,7 +152,7 @@ public class Toaster extends JavaPlugin {
 		return itemConfig;
 	}
 
-	private void loadItemConfig() {
+	public void loadItemConfig() {
 		itemConfigFile = new File(getDataFolder(), "ItemConfig.yml");
 		if (!itemConfigFile.exists()) {
 			itemConfigFile.getParentFile().mkdirs();
@@ -175,7 +175,7 @@ public class Toaster extends JavaPlugin {
 		return ovenGuiConfig;
 	}
 
-	private void loadOvenGui() {
+	public void loadOvenGui() {
 
 		ovenGuiFile = new File(getDataFolder(), "OvenGui.yml");
 		if (!ovenGuiFile.exists()) {
@@ -185,16 +185,6 @@ public class Toaster extends JavaPlugin {
 		ovenGuiConfig = new YamlConfiguration();
 		try {
 			ovenGuiConfig.load(ovenGuiFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public void saveOvenGui() {
-
-		try {
-			ovenGuiConfig.save(ovenGuiFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
