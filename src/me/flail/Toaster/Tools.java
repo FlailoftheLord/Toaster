@@ -15,7 +15,7 @@ public class Tools {
 
 	public String chat(String msg, String cmd, Player player) {
 
-		String reply = "toaster";
+		String reply = msg;
 
 		FileConfiguration config = plugin.getConfig();
 
@@ -29,14 +29,14 @@ public class Tools {
 
 			String pName = player.getName();
 			reply = ChatColor.translateAlternateColorCodes('&',
-					msg.replaceAll("<player>", pName).replaceAll("<prefix>", prefix)
+					msg.replace("<player>", pName).replaceAll("<prefix>", prefix)
 							.replaceAll("<vaultVersion>", vaultVersion).replaceAll("<version>", version)
 							.replaceAll("<eco>", eco).replaceAll("<command>", cmd));
 
-		} catch (NullPointerException e) {
+		} catch (IllegalArgumentException | NullPointerException e) {
 
 			reply = ChatColor.translateAlternateColorCodes('&',
-					msg.replaceAll("<prefix>", prefix).replaceAll("<vaultVersion>", vaultVersion)
+					msg.replace("<prefix>", prefix).replaceAll("<vaultVersion>", vaultVersion)
 							.replaceAll("<version>", version).replaceAll("<eco>", eco).replaceAll("<command>", cmd));
 
 		}
@@ -47,7 +47,7 @@ public class Tools {
 
 	public String toasterChat(String msg, Player player, String cmd, String item, int itemAmount, String type) {
 
-		String reply = "Toast!";
+		String reply = msg;
 
 		FileConfiguration config = plugin.getConfig();
 		FileConfiguration itemConfig = plugin.getItemConfig();
@@ -83,7 +83,7 @@ public class Tools {
 								.replaceAll("<result>", result).replaceAll("<exp>", exp + "")
 								.replaceAll("<amount>", itemAmount + "").replaceAll("<raw-item>", rawItem));
 
-			} catch (NullPointerException e) {
+			} catch (Exception e) {
 
 				reply = ChatColor.translateAlternateColorCodes('&',
 						msg.replaceAll("<prefix>", prefix).replaceAll("<vaultVersion>", vaultVersion)
@@ -120,7 +120,7 @@ public class Tools {
 								.replaceAll("<result>", result).replaceAll("<exp>", exp + "")
 								.replaceAll("<amount>", itemAmount + "").replaceAll("<raw-item>", rawItem));
 
-			} catch (NullPointerException e) {
+			} catch (Exception e) {
 
 				reply = ChatColor.translateAlternateColorCodes('&',
 						msg.replaceAll("<prefix>", prefix).replaceAll("<vaultVersion>", vaultVersion)
@@ -155,7 +155,7 @@ public class Tools {
 								.replaceAll("<result>", result).replaceAll("<exp>", exp + "")
 								.replaceAll("<amount>", itemAmount + "").replaceAll("<raw-item>", result));
 
-			} catch (NullPointerException e) {
+			} catch (Exception e) {
 
 				reply = ChatColor.translateAlternateColorCodes('&',
 						msg.replaceAll("<prefix>", prefix).replaceAll("<vaultVersion>", vaultVersion)

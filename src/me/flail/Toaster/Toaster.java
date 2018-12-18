@@ -54,14 +54,14 @@ public class Toaster extends JavaPlugin {
 	public String version = this.getDescription().getVersion();
 
 	public String ecoPluginName = "Unknown";
-	public String vaultVersion = this.getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion();
+	public String vaultVersion = "Unknown";
 
 	public Economy getEconomy() {
 		return eco;
 	}
 
 	private boolean setupEconomy() {
-		if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+		if (plugin.getPlugin("Vault") == null) {
 			return false;
 		}
 
@@ -72,6 +72,8 @@ public class Toaster extends JavaPlugin {
 		}
 		eco = vaultEconomy.getProvider();
 
+		vaultVersion = Bukkit.getPluginManager().getPlugin("Vault").getDescription().getVersion();
+
 		ecoPluginName = eco.getName();
 
 		return eco != null;
@@ -80,7 +82,7 @@ public class Toaster extends JavaPlugin {
 	@Override
 	public void onEnable() {
 
-		if (plugin.getPlugin("Vault").isEnabled()) {
+		if ((plugin.getPlugin("Vault") != null) && plugin.getPlugin("Vault").isEnabled()) {
 
 			if (!setupEconomy()) {
 

@@ -11,7 +11,7 @@ website: https://www.github.com/FlailoftheLord
 # it can optionally work without vault.
 # so add it as a soft-depend
 main: me.flail.Toaster.Toaster
-version: 1.6.0
+version: 1.6.1
 api-version: 1.13
 softdepend: [Vault]
 
