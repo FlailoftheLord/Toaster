@@ -3,31 +3,29 @@ package me.flail.Toaster.Cooker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.Toaster.Toaster;
-import me.flail.Toaster.Tools;
+import me.flail.Toaster.Utilities.Tools;
 import net.milkbowl.vault.economy.Economy;
 
 public class CookCommand {
 
-	private Toaster plugin = Toaster.getPlugin(Toaster.class);
+	private Toaster plugin = Toaster.toaster;
 
 	private Tools tools = plugin.tools;
 
 	private Economy eco = plugin.getEconomy();
 
-	private Map<Player, Integer> cooldown = plugin.cooldown;
+	private Map<UUID, Integer> cooldown = plugin.cooldown;
 
 	public void Cook(CommandSender sender, String command, String[] args) {
 
@@ -38,122 +36,107 @@ public class CookCommand {
 			FileConfiguration config = plugin.getConfig();
 
 			String noPermission = config.getString("NoPermissionMessage");
+			String noMoney = config.get("Cook.DontHaveEnoughMoney").toString();
+			String invalidItem = config.get("Cook.InvalidItem").toString();
 
 			if (args.length == 0) {
 
-				if (player.hasPermission("toaster.cook") || player.hasPermission("toaster.op")) {
+				if (player.hasPermission("toaster.cook")) {
 
-					FileConfiguration itemConfig = plugin.getItemConfig();
+					ItemStack pHand = player.getInventory().getItemInMainHand();
 
-					ConfigurationSection itemList = itemConfig.getConfigurationSection("Cookables");
+					String pItemName = pHand.getType().toString();
 
-					if (itemList != null) {
+					if (pItemName.isEmpty() || pItemName.equalsIgnoreCase("air") || (pHand == null)) {
+						player.sendMessage(tools.chat("<prefix> &cYou must have an item in your hand!", "cook", player));
 
-						Set<String> items = itemList.getKeys(false);
+						return;
+					}
 
-						ItemStack pHand = player.getInventory().getItemInMainHand();
+					Map<String, Object> itemSection = tools.getItemSection(pItemName, "cook");
 
-						String pItemName = pHand.getType().toString();
+					if (itemSection == null) {
+						player.sendMessage(tools.toasterChat(invalidItem + "null item", player, "cook",
+								itemSection, pHand.getAmount(), "cook"));
+						return;
+					}
 
-						double playerBalance = eco.getBalance(player);
+					String permission = "";
+					if (itemSection.containsKey("permission")) {
+						permission = itemSection.get("permission").toString();
+					} else {
+						permission = "toaster.cook";
+					}
 
-						double maxWithdraw = config.getDouble("MaxMoneyWithdraw");
+					if (player.hasPermission("toaster.item.all") || player.hasPermission(permission)) {
 
-						int pItemAmount = pHand.getAmount();
+						int amount = pHand.getAmount();
+						double cost = 0.0;
+						if (itemSection.containsKey("price")) {
+							cost = Double.parseDouble(itemSection.get("price").toString().replaceAll("[a-zA-Z]", ""));
+						}
+						double totalPrice = cost * amount;
 
-						boolean validItem = true;
-
-						for (String item : items) {
-
-							String rawItem = itemList.getString(item + ".Item").toUpperCase();
-
-							String cookedItem = itemList.getString(item + ".Result").toUpperCase();
-
-							String expVariable = itemList.get(item + ".Exp").toString().toUpperCase();
-
-							double cost = itemList.getDouble(item + ".Price");
-
-							String cookSuccess = tools.chat(
-									config.getString("Cook.Success").replaceAll("<item>", item)
-											.replaceAll("<result>", cookedItem).replaceAll("<amount>", pItemAmount + "")
-											.replaceAll("<cost>", (cost * pItemAmount) + "")
-											.replaceAll("<price>", cost + "").replaceAll("<exp>", expVariable),
-									command, player);
-
-							String cookNoMoney = tools.chat(config.getString("Cook.DontHaveEnoughMoney")
-									.replaceAll("<item>", item).replaceAll("<result>", cookedItem)
-									.replaceAll("<amount>", pItemAmount + "").replaceAll("<exp>", expVariable), command,
-									player);
-
-							if (pItemName.equalsIgnoreCase(rawItem)) {
-
-								ItemStack cookedResult = new ItemStack(Material.getMaterial(cookedItem), pItemAmount);
-
-								double totalCost = cost * pItemAmount;
-
-								if (!(totalCost > playerBalance)) {
-
-									if ((totalCost > maxWithdraw) && !player.hasPermission("toaster.op")
-											&& !player.hasPermission("toaster.bypasslimits")) {
-
-										String cantSpendThatMuch = tools.chat(config.getString("CannotSpend")
-												.replaceAll("<item>", item).replaceAll("<result>", cookedItem)
-												.replaceAll("<amount>", pItemAmount + "")
-												.replaceAll("<cost>", (totalCost) + "").replaceAll("<price>", cost + "")
-												.replaceAll("<exp>", expVariable)
-												.replaceAll("<maxWithdraw>", maxWithdraw + ""), command, player);
-
-										player.sendMessage(cantSpendThatMuch);
-
-										validItem = true;
-										break;
-
-									} else {
-
-										if (expVariable.endsWith("L")) {
-											int exp = Integer.parseInt(expVariable.replace("L", ""));
-											player.giveExpLevels(exp * pItemAmount);
-										} else {
-											int exp = Integer.parseInt(expVariable);
-											player.giveExp(exp * pItemAmount);
-										}
-
-										eco.withdrawPlayer(player, totalCost);
-
-										player.getInventory().setItemInMainHand(cookedResult);
-
-										player.playSound(player.getLocation(), Sound.BLOCK_FURNACE_FIRE_CRACKLE, 2, 2);
-
-										player.sendMessage(cookSuccess);
-
-										validItem = true;
-										break;
-
-									}
-
-								} else {
-
-									player.sendMessage(cookNoMoney.replaceAll("<cost>", totalCost + "")
-											.replaceAll("<price>", totalCost + ""));
-
-									break;
-								}
-
-							} else {
-								validItem = false;
-
-							}
-
+						if ((eco.getBalance(player) < totalPrice) && !player.hasPermission("toaster.bypasscost")) {
+							player.sendMessage(tools.toasterChat(noMoney, player, "cook", itemSection, amount, "cook"));
+							return;
 						}
 
-						if (!validItem) {
-							String cantCook = tools.chat(config.getString("Cook.InvalidItem")
-									.replaceAll("<item>", pItemName).replaceAll("<amount>", pItemAmount + ""), command,
-									player);
-
-							player.sendMessage(cantCook);
+						double maxSpendings = config.getDouble("MaxMoneyWithdraw", 100.0);
+						if ((totalPrice > maxSpendings) && !player.hasPermission("toaster.bypasslimits")) {
+							player.sendMessage(tools.toasterChat(
+									config.get("CannotSpend").toString().replace("<maxWithdraw>", maxSpendings + ""), player,
+									"cook", itemSection, amount, "cook"));
+							return;
 						}
 
+						Material cookedType = tools.convertItem(pItemName, "cook");
+						if (cookedType == Material.AIR) {
+							player.sendMessage(tools.chat(
+									"<prefix> &cAn invalid item was detected. Cancelling... Error at: Result:"
+											+ itemSection.get("result").toString(),
+											"cook", player));
+
+							plugin.console.sendMessage(
+									tools.chat("<prefix> &cAn invalid item was detected. Cancelling... Error at: Result:"
+											+ itemSection.get("result").toString(), "", player));
+
+							return;
+						}
+						// Once all checks are done, give the player the converted item.
+						ItemStack cookedItem = new ItemStack(cookedType, amount);
+						player.getInventory().setItemInMainHand(cookedItem);
+
+						// Then give appropriate experience
+						String experience = itemSection.get("exp").toString().replaceAll("[^L0-9]", "");
+						boolean isExpLevel = false;
+						int expAmount = Integer.parseInt(experience.replaceAll("[^0-9]", ""));
+						int totalExp = expAmount * amount;
+
+						if (experience.endsWith("L")) {
+							isExpLevel = true;
+						}
+
+						if (isExpLevel) {
+							player.giveExpLevels(totalExp);
+						} else {
+							player.giveExp(totalExp);
+						}
+
+						// Withdraw the cost from their balance.
+						if (!player.hasPermission("toaster.bypasscost")) {
+							eco.withdrawPlayer(player, totalPrice);
+						}
+
+						// And send the messages.
+						player.sendMessage(tools.toasterChat(config.get("Cook.Success").toString(), player, "cook",
+								itemSection, amount, "cook"));
+
+						return;
+					} else {
+						player.sendMessage(tools.toasterChat(invalidItem, player, "cook",
+								itemSection, pHand.getAmount(), "cook"));
+						return;
 					}
 
 				} else {
@@ -175,22 +158,19 @@ public class CookCommand {
 
 						int cooldownTime = config.getInt("Friend.Cooldown");
 
-						int systemTime = (int) System.currentTimeMillis() / 1000;
-
 						int cooldownLeft = 0;
-
-						try {
-							cooldownLeft = cooldown.get(player);
-						} catch (NullPointerException e) {
-							cooldownLeft = 0;
+						if (cooldown.containsKey(player.getUniqueId())) {
+							cooldownLeft = Integer.valueOf(cooldown.get(player.getUniqueId()));
 						}
 
-						if (!player.hasPermission("toaster.op") && !player.hasPermission("toaster.friend")
-								&& !player.hasPermission("toaster.friend.bypasscooldown")
-								&& (cooldownLeft > systemTime)) {
 
-							String cooldownMsg = config.getString("Friend.CooldownMessage").replaceAll("<cooldown>",
-									(cooldownLeft - systemTime) + "");
+						if ((!player.hasPermission("toaster.friend.bypasscooldown")
+								&& (cooldownLeft > 0))) {
+
+							String cooldownMsg = tools.toasterChat(
+									config.getString("Friend.CooldownMessage"), player, "cook", null,
+									cooldownLeft,
+									"friend");
 
 							player.sendMessage(tools.chat(cooldownMsg, command, player));
 
@@ -214,12 +194,11 @@ public class CookCommand {
 
 							String friendItem = config.getString("Friend.Item").toUpperCase();
 
-							String itemName = tools.chat(
-									config.getString("Friend.NameFormat").replaceAll("<item>", friendItem)
-											.replaceAll("<result>", friendItem).replaceAll("<amount>", 1 + "")
-											.replaceAll("<cost>", (price * 1) + "").replaceAll("<price>", price + "")
-											.replaceAll("<exp>", expVar).replaceAll("<friend-name>", subject),
-									command, player);
+							String itemName = tools.toasterChat(
+									config.getString("Friend.NameFormat"), player, "cook", null,
+									Integer.parseInt(cooldownLeft + ""),
+									"friend")
+									.replace("<friend-name>", subject);
 
 							List<String> itemLore = config.getStringList("Friend.Lore");
 
@@ -248,14 +227,38 @@ public class CookCommand {
 
 							String friendCook = tools.toasterChat(
 									config.getString("Friend.Success").replaceAll("<friend-name>", subject), player,
-									command, "Friend", 1, "friend");
+									command, null, 1, "friend");
 							String tooPoor = tools.toasterChat(
 									config.getString("Friend.TooPoor").replaceAll("<friend-name>", subject), player,
-									command, "Friend", 1, "friend");
+									command, null, 1, "friend");
 
 							double playerBal = eco.getBalance(player);
 
-							if (!(price > playerBal)) {
+							if (!player.hasPermission("toaster.op") && !(price > playerBal)) {
+
+								boolean broadcastMsg = config.getBoolean("Friend.Broadcast.Enabled");
+								if (validPlayer && broadcastMsg) {
+									String broadcast = config.getString("Friend.Broadcast.Message");
+									plugin.server.broadcastMessage(
+											tools.toasterChat(broadcast.replaceAll("<friend-name>", subject), player,
+													command, null, 1, "friend"));
+
+								}
+								player.getInventory().addItem(new ItemStack(item));
+								player.sendMessage(friendCook);
+								eco.withdrawPlayer(player, price);
+
+								if (expVar.endsWith("L")) {
+									int exp = Integer.parseInt(expVar.replace("L", ""));
+									player.giveExpLevels(exp);
+								} else {
+									int exp = Integer.parseInt(expVar);
+									player.giveExp(exp);
+								}
+
+								cooldown.put(player.getUniqueId(), Integer.valueOf(cooldownTime));
+
+							} else if (player.hasPermission("toaster.op")) {
 
 								boolean broadcastMsg = config.getBoolean("Friend.Broadcast.Enabled");
 								if (validPlayer && broadcastMsg) {
@@ -263,39 +266,21 @@ public class CookCommand {
 									String broadcast = config.getString("Friend.Broadcast.Message");
 									plugin.server.broadcastMessage(
 											tools.toasterChat(broadcast.replaceAll("<friend-name>", subject), player,
-													command, "Friend", 1, "friend"));
-
-									player.getInventory().addItem(new ItemStack(item));
-									player.sendMessage(friendCook);
-									eco.withdrawPlayer(player, price);
-
-									if (expVar.endsWith("L")) {
-										int exp = Integer.parseInt(expVar.replace("L", ""));
-										player.giveExpLevels(exp);
-									} else {
-										int exp = Integer.parseInt(expVar);
-										player.giveExp(exp);
-									}
-
-									cooldown.put(player, systemTime + cooldownTime);
-
-								} else {
-
-									player.getInventory().addItem(new ItemStack(item));
-									player.sendMessage(friendCook);
-									eco.withdrawPlayer(player, price);
-
-									if (expVar.endsWith("L")) {
-										int exp = Integer.parseInt(expVar.replace("L", ""));
-										player.giveExpLevels(exp);
-									} else {
-										int exp = Integer.parseInt(expVar);
-										player.giveExp(exp);
-									}
-
-									cooldown.put(player, systemTime + cooldownTime);
-
+													command, null, 1, "cook"));
 								}
+
+								player.getInventory().addItem(new ItemStack(item));
+								player.sendMessage(friendCook);
+
+								if (expVar.endsWith("L")) {
+									int exp = Integer.parseInt(expVar.replace("L", ""));
+									player.giveExpLevels(exp);
+								} else {
+									int exp = Integer.parseInt(expVar);
+									player.giveExp(exp);
+								}
+
+								cooldown.put(player.getUniqueId(), Integer.valueOf(cooldownTime));
 
 							} else {
 
@@ -316,18 +301,18 @@ public class CookCommand {
 			} else {
 
 				player.sendMessage(
-						tools.chat("<prefix> &cHold your item in your hand and type &7/cook", command, player));
+						tools.chat("<prefix> &cHold an item in your hand and type &7/cook", command, player));
 				if (player.hasPermission("toaster.friend") || player.hasPermission("toaster.friend.cook")
 						|| player.hasPermission("toaster.op")) {
 					player.sendMessage(
-							tools.chat("&cor you can type /cook [player-name] to cook a player!", command, player));
+							tools.chat("&cor you can type &7/cook [player-name] &cto cook a player!", command, player));
 				}
 
 			}
 
 		} else {
 			plugin.console
-					.sendMessage(tools.chat("&eLol, trying to cook food in the console?? ... smh", command, null));
+			.sendMessage(tools.chat("&eLol, trying to cook food in the console?? ... smh", command, null));
 		}
 
 	}

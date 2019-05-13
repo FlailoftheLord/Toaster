@@ -29,7 +29,7 @@ ReloadMessage: "<prefix> &aSuccessfully reloaded toasters' configuration files!"
 # set the maximum amount of money to spend in one /cook or /smelt session.
 # use the placeholder <maxWithdraw>
 MaxMoneyWithdraw: 150.00
-# message sent if a player tries to cook something thats' total cost exceeds the max withdraw amount defined above.
+# message sent if a player tries to cook something which's total cost exceeds the max withdraw amount defined above.
 CannotSpend: "<prefix> &cyou can't spend more than &a$&e<maxWithdraw>&c on one cook/smelt session!"
 
 # for these messages you may use the placeholders ->

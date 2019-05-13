@@ -1,10 +1,14 @@
-package me.flail.Toaster;
+package me.flail.Toaster.Utilities;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import me.flail.Toaster.Toaster;
+import me.flail.Toaster.ToasterCommand;
 import me.flail.Toaster.Cooker.CookCommand;
+import me.flail.Toaster.Roaster.RoastCommand;
 import me.flail.Toaster.Smelter.SmeltCommand;
 
 public class CommandHandler implements CommandExecutor {
@@ -41,6 +45,9 @@ public class CommandHandler implements CommandExecutor {
 
 			break;
 		case "roast":
+			if (sender instanceof Player) {
+				new RoastCommand().Roast((Player) sender);
+			}
 
 			break;
 		case "toast":

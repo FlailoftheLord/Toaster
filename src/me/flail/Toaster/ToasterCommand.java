@@ -5,6 +5,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import me.flail.Toaster.Utilities.Tools;
+
 public class ToasterCommand {
 
 	private Toaster plugin = Toaster.getPlugin(Toaster.class);
@@ -24,10 +26,10 @@ public class ToasterCommand {
 			String reloadMessage = tools.chat(config.getString("ReloadMessage"), command, player);
 
 			String defaultMessage = tools.chat(
-					"<prefix> &7Running &e&lToaster &r&eversion &6<version> &2by FlailoftheLord.", command, player);
+					"<prefix> &eYour server is running &lToaster &7v<version> &2by FlailoftheLord.", command, player);
 
 			String about = tools.chat(
-					"<prefix> &6the new, ultimate Toaster, which shall take over minecraft as we know it today!",
+					"<prefix> &6the new, ultimate Toaster; which shall take over minecraft as we know it today!",
 					command, player);
 
 			String usage = tools.chat("<prefix> &cProper usage: &7/<command> [reload:about]", command, player);
@@ -41,11 +43,7 @@ public class ToasterCommand {
 						if (args[0].equalsIgnoreCase("reload")) {
 
 							if (player.hasPermission("toaster.reload")) {
-
-								plugin.reloadConfig();
-								plugin.loadItemConfig();
-								plugin.loadOvenGui();
-
+								plugin.doReload();
 								player.sendMessage(reloadMessage);
 
 							} else {

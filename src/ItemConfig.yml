@@ -1,18 +1,23 @@
-
 #===============================================================================================================#
 # Here you can customize what items toaster can cook.
 # if you want to add a new item simply create a friendly name as the title
 # then add the Item: "" with its appropriate BUKKIT item  name which you can get from here:
 #           https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-# then add the price which is how much the player will be charged for cooking ONE of this item.
-# then set the Exp amount which the player will be given per item cooked, if you want to use levels
+# -
+# then add the price which is how much the player will be charged for converting ONE of this item.
+# then set the Exp amount which the player will be given per item, if you want to use levels
 # simpy set it as Exp: 3.0L instead of Exp: 3.0 
-# and finally set the item type which it will be cooked into, just follow this template and you will be fine!
+# and finally set the resulting item type, just follow this template and you will be fine!
 # FancyFood:
 #   Item: "GRASS_BLOCK"
 #   Price: 12.57
 #   Exp: 2
 #   Result: "GOLD_BLOCK"
+# -
+# And finally to set permissions for an item.
+# use  'toaster.item.<whatever-you-want-here>'
+# You can also apply the permission 'toaster.item.all'
+# which will allow the conversion of all items from both /smelt & /cook
 #================================================================================================================#
 
 Cookables:
@@ -22,18 +27,26 @@ Cookables:
     Price: 5.0
     Exp: 3
     Result: "COOKED_CHICKEN"
+    permission: toaster.item.chicken
   
   Mutton:
     Item: "MUTTON"
     Price: 5.0
     Exp: 3
     Result: "COOKED_MUTTON"
+    permission: toaster.item.mutton
   
   Beef:
     Item: "BEEF"
     Price: 5.0
     Exp: 4
     Result: "COOKED_BEEF"
+    
+  Porkchop:
+    Item: "PORKCHOP"
+    Price: 5.0
+    Exp: 4
+    Result: "COOKED_PORKCHOP"
   
   Rabbit:
     Item: "RABBIT"
@@ -70,6 +83,12 @@ Cookables:
 # And as long as you follow the template (defined above) nothing will break!
     
 Smeltables:
+  
+  CoalOre:
+    Item: "COal_ore"
+    Price: 5.2
+    Exp: 8
+    Result: "coal"
   
   IronOre:
     Item: "IRON_ORE"

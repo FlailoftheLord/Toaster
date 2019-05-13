@@ -11,7 +11,7 @@ website: https://www.github.com/FlailoftheLord
 # it can optionally work without vault.
 # so add it as a soft-depend
 main: me.flail.Toaster.Toaster
-version: 1.6.1
+version: 1.6.5
 api-version: 1.13
 softdepend: [Vault]
 
@@ -36,6 +36,10 @@ commands:
     description: oven command
     usage: /oven
     
+  roast:
+    description: roast some poor noob
+    usage: /roast <player>
+    
     
 permissions:
 
@@ -53,6 +57,8 @@ permissions:
       toaster.friend: true    
       # allows you to bypass the money spending limit in the config.yml 
       toaster.bypasslimits: true
+      toaster.bypasscost: true
+      toaster.item.all: true
       
   toaster.cook:
     description: permission to use /cook
@@ -90,6 +96,12 @@ permissions:
   toaster.command:
     description: is necessary to use /toaster reload
     default: true
+    
+  toaster.item.all:
+    description: gives access to smelt & cook practically everything!
+    default: false
+    children:
+      toaster.item.*: true
     
     
     

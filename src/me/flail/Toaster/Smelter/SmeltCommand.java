@@ -1,17 +1,15 @@
 package me.flail.Toaster.Smelter;
 
-import java.util.Set;
+import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.flail.Toaster.Toaster;
-import me.flail.Toaster.Tools;
+import me.flail.Toaster.Utilities.Tools;
 import net.milkbowl.vault.economy.Economy;
 
 public class SmeltCommand {
@@ -31,139 +29,123 @@ public class SmeltCommand {
 			FileConfiguration config = plugin.getConfig();
 
 			String noPermission = config.getString("NoPermissionMessage");
+			String noMoney = config.get("Smelt.DontHaveEnoughMoney").toString();
+			String invalidItem = config.get("Smelt.InvalidItem").toString();
 
 			if (args.length == 0) {
 
-				if (player.hasPermission("toaster.smelt") || player.hasPermission("toaster.op")) {
+				if (player.hasPermission("toaster.smelt")) {
 
-					FileConfiguration itemConfig = plugin.getItemConfig();
+					ItemStack pHand = player.getInventory().getItemInMainHand();
 
-					ConfigurationSection itemList = itemConfig.getConfigurationSection("Smeltables");
+					String pItemName = pHand.getType().toString();
 
-					if (itemList != null) {
+					if (pItemName.isEmpty() || pItemName.equalsIgnoreCase("air") || (pHand == null)) {
+						player.sendMessage(tools.chat("<prefix> &cYou must have an item in your hand!", "smelt", player));
 
-						Set<String> items = itemList.getKeys(false);
+						return;
+					}
 
-						ItemStack pHand = player.getInventory().getItemInMainHand();
+					Map<String, Object> itemSection = tools.getItemSection(pItemName, "smelt");
 
-						String pItemName = pHand.getType().toString();
+					if (itemSection == null) {
+						player.sendMessage(tools.toasterChat(invalidItem, player, "smelt",
+								itemSection, pHand.getAmount(), "smelt"));
+						return;
+					}
 
-						double playerBalance = eco.getBalance(player);
+					String permission = "";
+					if (itemSection.containsKey("permission")) {
+						permission = itemSection.get("permission").toString();
+					} else {
+						permission = "toaster.smelt";
+					}
 
-						double maxWithdraw = config.getDouble("MaxMoneyWithdraw");
+					if (player.hasPermission("toaster.item.all") || player.hasPermission(permission)) {
 
-						int pItemAmount = pHand.getAmount();
+						int amount = pHand.getAmount();
+						double cost = 0.0;
+						if (itemSection.containsKey("price")) {
+							cost = Double.parseDouble(itemSection.get("price").toString().replaceAll("[a-zA-Z]", ""));
+						}
+						double totalPrice = cost * amount;
 
-						boolean validItem = true;
-
-						for (String item : items) {
-
-							String rawItem = itemList.getString(item + ".Item").toUpperCase();
-
-							String smeltedItem = itemList.getString(item + ".Result").toUpperCase();
-
-							String expVariable = itemList.get(item + ".Exp").toString().toUpperCase();
-
-							double cost = itemList.getDouble(item + ".Price");
-
-							String smeltSuccess = tools.chat(
-									config.getString("Smelt.Success").replaceAll("<item>", item)
-											.replaceAll("<result>", smeltedItem)
-											.replaceAll("<amount>", pItemAmount + "")
-											.replaceAll("<cost>", (cost * pItemAmount) + "")
-											.replaceAll("<price>", cost + "").replaceAll("<exp>", expVariable),
-									command, player);
-
-							String smeltNoMoney = tools.chat(
-									config.getString("Smelt.DontHaveEnoughMoney").replaceAll("<item>", item)
-											.replaceAll("<result>", smeltedItem)
-											.replaceAll("<amount>", pItemAmount + "").replaceAll("<exp>", expVariable),
-									command, player);
-
-							if (pItemName.equalsIgnoreCase(rawItem)) {
-
-								ItemStack smeltedResult = new ItemStack(Material.getMaterial(smeltedItem), pItemAmount);
-
-								double totalCost = cost * pItemAmount;
-
-								if (!(totalCost > playerBalance)) {
-
-									if ((totalCost > maxWithdraw) && !player.hasPermission("toaster.op")
-											&& !player.hasPermission("toaster.bypasslimits")) {
-
-										String cantSpendThatMuch = tools.chat(config.getString("CannotSpend")
-												.replaceAll("<item>", item).replaceAll("<result>", smeltedItem)
-												.replaceAll("<amount>", pItemAmount + "")
-												.replaceAll("<cost>", (totalCost) + "").replaceAll("<price>", cost + "")
-												.replaceAll("<exp>", expVariable)
-												.replaceAll("<maxWithdraw>", maxWithdraw + ""), command, player);
-
-										player.sendMessage(cantSpendThatMuch);
-
-										validItem = true;
-										break;
-
-									} else {
-
-										if (expVariable.endsWith("L")) {
-											int exp = Integer.parseInt(expVariable.replace("L", ""));
-											player.giveExpLevels(exp * pItemAmount);
-										} else {
-											int exp = Integer.parseInt(expVariable);
-											player.giveExp(exp * pItemAmount);
-										}
-
-										eco.withdrawPlayer(player, totalCost);
-
-										player.getInventory().setItemInMainHand(smeltedResult);
-
-										player.playSound(player.getLocation(), Sound.BLOCK_FURNACE_FIRE_CRACKLE, 2, 2);
-
-										player.sendMessage(smeltSuccess);
-
-										validItem = true;
-										break;
-
-									}
-
-								} else {
-
-									player.sendMessage(smeltNoMoney.replaceAll("<cost>", totalCost + "")
-											.replaceAll("<price>", totalCost + ""));
-
-									break;
-								}
-
-							} else {
-								validItem = false;
-
-							}
-
+						if ((eco.getBalance(player) < totalPrice) && !player.hasPermission("toaster.bypasscost")) {
+							player.sendMessage(tools.toasterChat(noMoney, player, "smelt", itemSection, amount, "smelt"));
+							return;
 						}
 
-						if (!validItem) {
-							String cantsmelt = tools.chat(config.getString("Smelt.InvalidItem")
-									.replaceAll("<item>", pItemName).replaceAll("<amount>", pItemAmount + ""), command,
-									player);
-
-							player.sendMessage(cantsmelt);
+						double maxSpendings = config.getDouble("MaxMoneyWithdraw", 100.0);
+						if ((totalPrice > maxSpendings) && !player.hasPermission("toaster.bypasslimits")) {
+							player.sendMessage(tools.toasterChat(
+									config.get("CannotSpend").toString().replace("<maxWithdraw>", maxSpendings + ""), player,
+									"smelt", itemSection, amount, "smelt"));
+							return;
 						}
 
+						Material smeltedType = tools.convertItem(pItemName, "smelt");
+						if (smeltedType == Material.AIR) {
+							player.sendMessage(tools.chat(
+									"<prefix> &cAn invalid item was detected. Cancelling... Error at: Result:"
+											+ itemSection.get("result").toString(),
+											"smelt", player));
+
+							plugin.console.sendMessage(
+									tools.chat("<prefix> &cAn invalid item was detected. Cancelling... Error at: Result:"
+											+ itemSection.get("result").toString(), "", player));
+
+							return;
+						}
+						// Once all checks are done, give the player the converted item.
+						ItemStack smeltedItem = new ItemStack(smeltedType, amount);
+						player.getInventory().setItemInMainHand(smeltedItem);
+
+						// Then give appropriate experience
+						String experience = itemSection.get("exp").toString().replaceAll("[^L0-9]", "");
+						boolean isExpLevel = false;
+						int expAmount = Integer.parseInt(experience.replaceAll("[^0-9]", ""));
+						int totalExp = expAmount * amount;
+
+						if (experience.endsWith("L")) {
+							isExpLevel = true;
+						}
+
+						if (isExpLevel) {
+							player.giveExpLevels(totalExp);
+						} else {
+							player.giveExp(totalExp);
+						}
+
+						// Withdraw the cost from their balance.
+						if (!player.hasPermission("toaster.bypasscost")) {
+							eco.withdrawPlayer(player, totalPrice);
+						}
+
+						// And send the messages.
+						player.sendMessage(tools.toasterChat(config.get("Smelt.Success").toString(), player, "smelt",
+								itemSection, amount, "smelt"));
+
+						return;
+					} else {
+						player.sendMessage(tools.toasterChat(invalidItem, player, "smelt",
+								itemSection, pHand.getAmount(), "smelt"));
+						return;
 					}
 
 				} else {
 					player.sendMessage(tools.chat(noPermission, command, player));
 				}
 
-			} else {
 
+			} else {
 				player.sendMessage(
-						tools.chat("<prefix> &cHold your item in your hand and type &7/smelt", command, player));
+						tools.chat("<prefix> &cHold an item in your hand and type &7/smelt", command, player));
 
 			}
 
 		} else {
-			plugin.console.sendMessage(tools.chat("&eSeriously?? O_O", command, null));
+			plugin.console
+			.sendMessage(tools.chat("&eLol, trying to smelt stuffs in the console?? ... smh", command, null));
 		}
 
 	}

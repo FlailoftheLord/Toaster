@@ -1,0 +1,29 @@
+# For multiline use
+# Message: |-
+#   line one
+#   line two...
+#   more lines... yeap...
+# -
+# Multiline comments will send each line in order after a short interval (in milliseconds, 1000 ms = 1 second)
+# -
+# Names can be anything you want, they don't have to be titled Roast#.
+# If a message contains ":" it must be put in quotes.
+# -
+# You can use the two placeholders <target> for the roasted player and <prefix> for plugin prefix.
+# - - - - - - - - - - - - - #
+Interval: 800
+
+Roast1: "<prefix> &cGet Toasted!"
+Roast2: "&cI hope your pickaxe breaks while mining logs!"
+Roast3: "&2You stick to your house like a piston!"
+Roast4: "&9Wow, eating duck again?"
+Roast5: "&aYou got yeeted on! &e<o/"
+Roast6: "&3Boi!"
+Roast7: "&cYou're single now because your friend dug straight down in minecraft."
+Roast8: |- 
+  '&7&o[Server: Made <target> a server operator]'
+  &f
+  &f
+  &4&lLOL JK!
+Roast9: "<prefix> &7This is an insult... yeah, you're offended yet?"
+Roast10: "&4&lOMG YOU'RE SO FAT!!!!!!!!!!"
