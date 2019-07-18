@@ -3,5 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SpigotAPI"/>
+	<classpathentry kind="lib" path="C:/Users/FlailoftheLord/Desktop/Minecraft/Spigot Plugins/Vault-1.7.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
