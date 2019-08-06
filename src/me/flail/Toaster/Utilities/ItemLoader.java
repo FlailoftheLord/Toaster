@@ -13,8 +13,6 @@ public class ItemLoader {
 	Toaster toaster;
 	FileConfiguration itemConfig;
 
-
-
 	public ItemLoader() {
 		toaster = Toaster.toaster;
 		itemConfig = toaster.getFile("ItemConfig");
