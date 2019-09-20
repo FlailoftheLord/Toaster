@@ -70,7 +70,7 @@ public class ToasterCommand {
 
 			if (command.equals("toaster")) {
 
-				plugin.console.sendMessage(ChatColor.GOLD + "WHat are you tryin to accomplish in console... o.O?");
+				plugin.console.sendMessage(ChatColor.GOLD + "WHat are you tryin' to accomplish in console... o.O?");
 
 			}
 

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import me.flail.Toaster.Toaster;
 import me.flail.Toaster.ToasterCommand;
 import me.flail.Toaster.Cooker.CookCommand;
+import me.flail.Toaster.Oven.OvenCommand;
 import me.flail.Toaster.Roaster.RoastCommand;
 import me.flail.Toaster.Smelter.SmeltCommand;
 
@@ -35,8 +36,7 @@ public class CommandHandler implements CommandExecutor {
 
 			break;
 		case "oven":
-
-			sender.sendMessage(tools.chat("&elol", cmd, null));
+			new OvenCommand(plugin).execute(sender, args);
 
 			break;
 		case "smelt":

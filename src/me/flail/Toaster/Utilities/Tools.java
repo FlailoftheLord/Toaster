@@ -18,6 +18,10 @@ public class Tools {
 		this.plugin = plugin;
 	}
 
+	public String chat(String msg) {
+		return chat(msg, null, null);
+	}
+
 	public String chat(String msg, String cmd, Player player) {
 
 		String reply = msg;
@@ -113,8 +117,8 @@ public class Tools {
 				.replaceAll("<eco>", eco).replaceAll("<command>", cmd).replaceAll("<permission>", permission)
 				.replaceAll("<item>", rawItem).replaceAll("<price>", price + "").replaceAll("<cost>", cost + "")
 				.replaceAll("<result>", result).replaceAll("<exp>", exp + "")
-						.replaceAll("<amount>", itemAmount + "").replaceAll("<cooldown>", itemAmount + "")
-						.replaceAll("<raw-item>", rawItem));
+				.replaceAll("<amount>", itemAmount + "").replaceAll("<cooldown>", itemAmount + "")
+				.replaceAll("<raw-item>", rawItem));
 
 		return reply;
 	}

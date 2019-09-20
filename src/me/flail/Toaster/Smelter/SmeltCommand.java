@@ -10,9 +10,10 @@ import org.bukkit.inventory.ItemStack;
 
 import me.flail.Toaster.Toaster;
 import me.flail.Toaster.Utilities.Tools;
+import me.flail.microtools.tools.Logger;
 import net.milkbowl.vault.economy.Economy;
 
-public class SmeltCommand {
+public class SmeltCommand extends Logger {
 
 	private Toaster plugin = Toaster.getPlugin(Toaster.class);
 
@@ -70,18 +71,7 @@ public class SmeltCommand {
 						}
 						double totalPrice = cost * amount;
 
-						if ((eco.getBalance(player) < totalPrice) && !player.hasPermission("toaster.bypasscost")) {
-							player.sendMessage(tools.toasterChat(noMoney, player, "smelt", itemSection, amount, "smelt"));
-							return;
-						}
 
-						double maxSpendings = config.getDouble("MaxMoneyWithdraw", 100.0);
-						if ((totalPrice > maxSpendings) && !player.hasPermission("toaster.bypasslimits")) {
-							player.sendMessage(tools.toasterChat(
-									config.get("CannotSpend").toString().replace("<maxWithdraw>", maxSpendings + ""), player,
-									"smelt", itemSection, amount, "smelt"));
-							return;
-						}
 
 						Material smeltedType = tools.convertItem(pItemName, "smelt");
 						if (smeltedType == Material.AIR) {
@@ -116,9 +106,27 @@ public class SmeltCommand {
 							player.giveExp(totalExp);
 						}
 
-						// Withdraw the cost from their balance.
-						if (!player.hasPermission("toaster.bypasscost")) {
-							eco.withdrawPlayer(player, totalPrice);
+
+						if (plugin.getEconomy() != null) {
+
+							if ((eco.getBalance(player) < totalPrice) && !player.hasPermission("toaster.bypasscost")) {
+								player.sendMessage(tools.toasterChat(noMoney, player, "smelt", itemSection, amount, "smelt"));
+								return;
+							}
+
+							double maxSpendings = config.getDouble("MaxMoneyWithdraw", 100.0);
+							if ((totalPrice > maxSpendings) && !player.hasPermission("toaster.bypasslimits")) {
+								player.sendMessage(tools.toasterChat(
+										config.get("CannotSpend").toString().replace("<maxWithdraw>", maxSpendings + ""), player,
+										"smelt", itemSection, amount, "smelt"));
+								return;
+							}
+
+							// Withdraw the cost from their balance.
+							if (!player.hasPermission("toaster.bypasscost")) {
+								eco.withdrawPlayer(player, totalPrice);
+							}
+
 						}
 
 						// And send the messages.

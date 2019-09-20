@@ -11,7 +11,7 @@ website: https://www.github.com/FlailoftheLord
 # it can optionally work without vault.
 # so add it as a soft-depend
 main: me.flail.Toaster.Toaster
-version: 1.6.5
+version: 1.6.6
 api-version: 1.13
 softdepend: [Vault]
 
@@ -20,25 +20,7 @@ commands:
   toaster:
     usage: /toaster [reload]
     description: main toaster command
-    aliases: []
-    
-  cook:
-    description: cook command
-    usage: /cook [player]
-    aliases: []
-    
-  smelt:
-    description: smelt command
-    usage: /smelt
-    aliases: []
-    
-  oven:
-    description: oven command
-    usage: /oven
-    
-  roast:
-    description: roast some poor noob
-    usage: /roast <player>
+    aliases: [cook, smelt, oven, roast]
     
     
 permissions:

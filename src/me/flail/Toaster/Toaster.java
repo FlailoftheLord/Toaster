@@ -34,6 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.flail.Toaster.Utilities.CommandHandler;
 import me.flail.Toaster.Utilities.ItemLoader;
 import me.flail.Toaster.Utilities.Tools;
+import me.flail.microtools.tools.DataFile;
 import net.milkbowl.vault.economy.Economy;
 
 public class Toaster extends JavaPlugin {
@@ -67,6 +68,7 @@ public class Toaster extends JavaPlugin {
 		if (plugin.getPlugin("Vault") == null) {
 			return false;
 		}
+		vaultVersion = Bukkit.getPluginManager().getPlugin("Vault").getDescription().getVersion();
 
 		RegisteredServiceProvider<Economy> vaultEconomy = getServer().getServicesManager()
 				.getRegistration(Economy.class);
@@ -75,7 +77,7 @@ public class Toaster extends JavaPlugin {
 		}
 		eco = vaultEconomy.getProvider();
 
-		vaultVersion = Bukkit.getPluginManager().getPlugin("Vault").getDescription().getVersion();
+
 
 		ecoPluginName = eco.getName();
 
@@ -100,6 +102,7 @@ public class Toaster extends JavaPlugin {
 			// Load up files
 			saveDefaultConfig();
 			loadFile("ItemConfig");
+			new DataFile("Oven.yml");
 
 			cookables.clear();
 			smeltables.clear();
@@ -130,7 +133,7 @@ public class Toaster extends JavaPlugin {
 			}, 20L, 32L);
 
 		} else {
-			getLogger().severe("Toaster Disabled, because Vault Was not Found!");
+			getLogger().severe("Toaster Disabled because Vault Was not Found!");
 			getLogger().severe("You can download the Latest version of Vault here:");
 			getLogger().severe("https://www.spigotmc.org/resources/vault.34315/");
 
@@ -169,32 +172,12 @@ public class Toaster extends JavaPlugin {
 
 	}
 
-	@Deprecated
-	public FileConfiguration getItemConfig() {
-		return this.getFile("ItemConfig");
-	}
-
-	@Deprecated
-	public void loadItemConfig() {
-		this.loadFile("ItemConfig");
-	}
-
-	@Deprecated
-	public FileConfiguration getOvenGui() {
-		return this.getFile("OvenGui");
-	}
-
-	@Deprecated
-	public void loadOvenGui() {
-		this.loadFile("OvenGui");
-	}
-
 	public FileConfiguration getFile(String name) {
 		File file = new File(getDataFolder(), name + ".yml");
 		if (!file.exists()) {
 			this.loadFile(name);
 		}
-		new YamlConfiguration();
+
 		return YamlConfiguration.loadConfiguration(file);
 	}
 
@@ -204,6 +187,7 @@ public class Toaster extends JavaPlugin {
 			file.getParentFile().mkdirs();
 			saveResource(name + ".yml", false);
 		}
+
 		FileConfiguration config = new YamlConfiguration();
 		if (name.equals("ItemConfig")) {
 			config.options().header(

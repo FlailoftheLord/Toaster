@@ -15,9 +15,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.Toaster.Toaster;
 import me.flail.Toaster.Utilities.Tools;
+import me.flail.microtools.tools.Logger;
 import net.milkbowl.vault.economy.Economy;
 
-public class CookCommand {
+public class CookCommand extends Logger {
 
 	private Toaster plugin = Toaster.toaster;
 
@@ -56,7 +57,7 @@ public class CookCommand {
 					Map<String, Object> itemSection = tools.getItemSection(pItemName, "cook");
 
 					if (itemSection == null) {
-						player.sendMessage(tools.toasterChat(invalidItem + "null item", player, "cook",
+						player.sendMessage(tools.toasterChat(invalidItem, player, "cook",
 								itemSection, pHand.getAmount(), "cook"));
 						return;
 					}
@@ -77,18 +78,6 @@ public class CookCommand {
 						}
 						double totalPrice = cost * amount;
 
-						if ((eco.getBalance(player) < totalPrice) && !player.hasPermission("toaster.bypasscost")) {
-							player.sendMessage(tools.toasterChat(noMoney, player, "cook", itemSection, amount, "cook"));
-							return;
-						}
-
-						double maxSpendings = config.getDouble("MaxMoneyWithdraw", 100.0);
-						if ((totalPrice > maxSpendings) && !player.hasPermission("toaster.bypasslimits")) {
-							player.sendMessage(tools.toasterChat(
-									config.get("CannotSpend").toString().replace("<maxWithdraw>", maxSpendings + ""), player,
-									"cook", itemSection, amount, "cook"));
-							return;
-						}
 
 						Material cookedType = tools.convertItem(pItemName, "cook");
 						if (cookedType == Material.AIR) {
@@ -123,9 +112,26 @@ public class CookCommand {
 							player.giveExp(totalExp);
 						}
 
-						// Withdraw the cost from their balance.
-						if (!player.hasPermission("toaster.bypasscost")) {
-							eco.withdrawPlayer(player, totalPrice);
+						if (plugin.getEconomy() != null) {
+
+							if ((eco.getBalance(player) < totalPrice) && !player.hasPermission("toaster.bypasscost")) {
+								player.sendMessage(tools.toasterChat(noMoney, player, "cook", itemSection, amount, "cook"));
+								return;
+							}
+
+							double maxSpendings = config.getDouble("MaxMoneyWithdraw", 100.0);
+							if ((totalPrice > maxSpendings) && !player.hasPermission("toaster.bypasslimits")) {
+								player.sendMessage(tools.toasterChat(
+										config.get("CannotSpend").toString().replace("<maxWithdraw>", maxSpendings + ""), player,
+										"cook", itemSection, amount, "cook"));
+								return;
+							}
+
+							// Withdraw the cost from their balance.
+							if (!player.hasPermission("toaster.bypasscost")) {
+								eco.withdrawPlayer(player, totalPrice);
+							}
+
 						}
 
 						// And send the messages.
