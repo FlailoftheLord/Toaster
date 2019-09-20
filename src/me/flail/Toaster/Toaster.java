@@ -102,7 +102,7 @@ public class Toaster extends JavaPlugin {
 			// Load up files
 			saveDefaultConfig();
 			loadFile("ItemConfig");
-			new DataFile("Oven.yml");
+			new DataFile("Oven.yml").load();
 
 			cookables.clear();
 			smeltables.clear();

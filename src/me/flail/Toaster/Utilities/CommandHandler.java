@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.flail.Toaster.Toaster;
 import me.flail.Toaster.ToasterCommand;
 import me.flail.Toaster.Cooker.CookCommand;
 import me.flail.Toaster.Oven.OvenCommand;
@@ -13,10 +12,6 @@ import me.flail.Toaster.Roaster.RoastCommand;
 import me.flail.Toaster.Smelter.SmeltCommand;
 
 public class CommandHandler implements CommandExecutor {
-
-	private Toaster plugin = Toaster.getPlugin(Toaster.class);
-
-	private Tools tools = plugin.tools;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -36,7 +31,7 @@ public class CommandHandler implements CommandExecutor {
 
 			break;
 		case "oven":
-			new OvenCommand(plugin).execute(sender, args);
+			new OvenCommand().execute(sender, args);
 
 			break;
 		case "smelt":

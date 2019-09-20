@@ -2,16 +2,16 @@ package me.flail.Toaster.Oven;
 
 import org.bukkit.command.CommandSender;
 
-import me.flail.Toaster.Toaster;
-import me.flail.Toaster.Utilities.Tools;
+import me.flail.microtools.tools.Logger;
 
-public class OvenCommand extends Tools {
-
-	public OvenCommand(Toaster plugin) {
-		super(plugin);
-	}
+public class OvenCommand extends Logger {
 
 	public void execute(CommandSender sender, String[] args) {
+		if (!sender.hasPermission("toaster.oven")) {
+			sender.sendMessage(chat(plugin.getConfig().getString("NoPermission")));
+
+			return;
+		}
 
 	}
 

@@ -2,7 +2,7 @@
 # But the actual question is... will you understand how to configure this ;)
 OvenItem:
   Name: "&7&lOven"
-  Item: "furnace"
+  Item: "blast_furnace"
   
 OvenUI:
   Name: "&8&lOven"
