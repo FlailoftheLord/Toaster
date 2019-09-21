@@ -1,4 +1,4 @@
-package me.flail.Toaster.Utilities;
+package me.flail.toaster.Tools;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import me.flail.Toaster.Toaster;
+import me.flail.toaster.Toaster;
 
 public class Tools {
 

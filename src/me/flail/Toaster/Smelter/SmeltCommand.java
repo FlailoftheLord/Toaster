@@ -1,4 +1,4 @@
-package me.flail.Toaster.Smelter;
+package me.flail.toaster.Smelter;
 
 import java.util.Map;
 
@@ -8,9 +8,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import me.flail.Toaster.Toaster;
-import me.flail.Toaster.Utilities.Tools;
-import me.flail.microtools.tools.Logger;
+import me.flail.toaster.Toaster;
+import me.flail.toaster.Tools.Tools;
+import me.flail.toaster.Utilities.Logger;
 import net.milkbowl.vault.economy.Economy;
 
 public class SmeltCommand extends Logger {

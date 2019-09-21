@@ -1,9 +1,11 @@
-package me.flail.microtools.tools;
+package me.flail.toaster.Tools;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+
+import me.flail.toaster.Utilities.Logger;
 
 public class Time extends Logger {
 

@@ -1,4 +1,4 @@
-package me.flail.Toaster.Roaster;
+package me.flail.toaster.Roaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import me.flail.Toaster.Toaster;
-import me.flail.microtools.tools.Logger;
+import me.flail.toaster.Toaster;
+import me.flail.toaster.Utilities.Logger;
 
 public class RoastCommand extends Logger {
 	Toaster plugin = Toaster.toaster;

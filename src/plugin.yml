@@ -10,15 +10,15 @@ website: https://www.github.com/FlailoftheLord
 # plugin depends on vault Economy for some features to work, 
 # it can optionally work without vault.
 # so add it as a soft-depend
-main: me.flail.Toaster.Toaster
-version: 1.6.6
+main: me.flail.toaster.Toaster
+version: 1.6.7
 api-version: 1.14
 softdepend: [Vault]
 
 commands:
 
   toaster:
-    usage: /toaster [reload]
+    usage: /toaster [about:reload]
     description: main toaster command
     aliases: [cook, smelt, oven, roast]
     

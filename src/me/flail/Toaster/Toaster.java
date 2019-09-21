@@ -13,17 +13,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.flail.Toaster;
+package me.flail.toaster;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,10 +36,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.Toaster.Utilities.CommandHandler;
-import me.flail.Toaster.Utilities.ItemLoader;
-import me.flail.Toaster.Utilities.Tools;
-import me.flail.microtools.tools.DataFile;
+import me.flail.toaster.Tools.DataFile;
+import me.flail.toaster.Tools.Tools;
+import me.flail.toaster.Utilities.CommandHandler;
+import me.flail.toaster.Utilities.ItemLoader;
+import me.flail.toaster.Utilities.TabCompleter;
 import net.milkbowl.vault.economy.Economy;
 
 public class Toaster extends JavaPlugin {
@@ -45,9 +51,12 @@ public class Toaster extends JavaPlugin {
 	public PluginManager plugin = Bukkit.getPluginManager();
 	public Server server = this.getServer();
 
+	public DataFile ovenSettings = new DataFile("Oven.yml");
+
 	public Map<UUID, Integer> cooldown = new HashMap<>();
-	public final Map<String, Map<String, Object>> cookables = new LinkedHashMap<>(32);
-	public final Map<String, Map<String, Object>> smeltables = new LinkedHashMap<>(32);
+	public Map<String, Map<String, Object>> cookables = new LinkedHashMap<>(32);
+	public Map<String, Map<String, Object>> smeltables = new LinkedHashMap<>(32);
+	public Map<World, Set<Location>> activeOvens = new HashMap<>();
 
 	public enum ToasterType {
 		COOK, SMELT, ROAST, BAKE
@@ -78,7 +87,6 @@ public class Toaster extends JavaPlugin {
 		eco = vaultEconomy.getProvider();
 
 
-
 		ecoPluginName = eco.getName();
 
 		return eco != null;
@@ -102,7 +110,7 @@ public class Toaster extends JavaPlugin {
 			// Load up files
 			saveDefaultConfig();
 			loadFile("ItemConfig");
-			new DataFile("Oven.yml").load();
+			ovenSettings = new DataFile("Oven.yml");
 
 			cookables.clear();
 			smeltables.clear();
@@ -153,13 +161,10 @@ public class Toaster extends JavaPlugin {
 	}
 
 	public void doReload() {
-		cookables.clear();
-		smeltables.clear();
-		new ItemLoader().loadItems("cookables");
-		new ItemLoader().loadItems("smeltables");
+		onDisable();
 
-		reloadConfig();
-		this.loadFile("ItemConfig");
+		onLoad();
+		onEnable();
 
 	}
 
@@ -168,6 +173,7 @@ public class Toaster extends JavaPlugin {
 		Set<String> commands = this.getDescription().getCommands().keySet();
 		for (String cmd : commands) {
 			getCommand(cmd).setExecutor(new CommandHandler());
+			getCommand(cmd).setTabCompleter(this);
 		}
 
 	}
@@ -223,5 +229,10 @@ public class Toaster extends JavaPlugin {
 		}
 	}
 
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+
+		return new TabCompleter(command).construct(label, args);
+	}
 
 }

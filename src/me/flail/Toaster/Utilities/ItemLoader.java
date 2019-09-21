@@ -1,4 +1,4 @@
-package me.flail.Toaster.Utilities;
+package me.flail.toaster.Utilities;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Map;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import me.flail.Toaster.Toaster;
-import me.flail.Toaster.Toaster.ToasterType;
+import me.flail.toaster.Toaster;
+import me.flail.toaster.Toaster.ToasterType;
 
 public class ItemLoader {
 	Toaster toaster;

@@ -1,15 +1,15 @@
-package me.flail.Toaster.Utilities;
+package me.flail.toaster.Utilities;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.flail.Toaster.ToasterCommand;
-import me.flail.Toaster.Cooker.CookCommand;
-import me.flail.Toaster.Oven.OvenCommand;
-import me.flail.Toaster.Roaster.RoastCommand;
-import me.flail.Toaster.Smelter.SmeltCommand;
+import me.flail.toaster.ToasterCommand;
+import me.flail.toaster.Cooker.CookCommand;
+import me.flail.toaster.Oven.OvenCommand;
+import me.flail.toaster.Roaster.RoastCommand;
+import me.flail.toaster.Smelter.SmeltCommand;
 
 public class CommandHandler implements CommandExecutor {
 

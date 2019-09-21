@@ -1,4 +1,4 @@
-package me.flail.microtools.tools;
+package me.flail.toaster.Utilities;
 
 /**
  * Marks an argument as Not null.

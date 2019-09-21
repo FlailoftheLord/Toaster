@@ -1,4 +1,4 @@
-package me.flail.microtools.tools;
+package me.flail.toaster.Utilities;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.bukkit.ChatColor;
+
+import me.flail.toaster.Tools.CommonUtilities;
+import me.flail.toaster.Tools.Time;
 
 /**
  * Basically, make all your classes extend this one.

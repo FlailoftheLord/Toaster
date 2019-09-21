@@ -1,4 +1,4 @@
-package me.flail.Toaster.Cooker;
+package me.flail.toaster.Cooker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.flail.Toaster.Toaster;
-import me.flail.Toaster.Utilities.Tools;
-import me.flail.microtools.tools.Logger;
+import me.flail.toaster.Toaster;
+import me.flail.toaster.Tools.Tools;
+import me.flail.toaster.Utilities.Logger;
 import net.milkbowl.vault.economy.Economy;
 
 public class CookCommand extends Logger {

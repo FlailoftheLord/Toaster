@@ -1,11 +1,11 @@
-package me.flail.Toaster;
+package me.flail.toaster;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import me.flail.Toaster.Utilities.Tools;
+import me.flail.toaster.Tools.Tools;
 
 public class ToasterCommand {
 
@@ -29,10 +29,10 @@ public class ToasterCommand {
 					"<prefix> &eYour server is running &lToaster &7v<version> &2by FlailoftheLord.", command, player);
 
 			String about = tools.chat(
-					"<prefix> &6the new, ultimate Toaster; which shall take over minecraft as we know it today!",
+					"<prefix> &6the new, ultimate Toaster which shall take over minecraft as we know it today!",
 					command, player);
 
-			String usage = tools.chat("<prefix> &cProper usage: &7/<command> [reload:about]", command, player);
+			String usage = tools.chat("<prefix> &cProper usage: &7/<command> [about:reload]", command, player);
 
 			if (command.equals("toaster")) {
 

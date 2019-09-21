@@ -1,4 +1,4 @@
-package me.flail.microtools.tools;
+package me.flail.toaster.Tools;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package me.flail.microtools.tools;
+package me.flail.toaster.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,13 @@ public class TabCompleter extends Logger {
 			return baseArgs;
 		}
 
-		switch (args.length) {
+		if (label.equalsIgnoreCase("toaster")) {
+			switch (args.length) {
+			case 0:
+				baseArgs.add("about");
+				baseArgs.add("reload");
+
+			}
 
 		}
 

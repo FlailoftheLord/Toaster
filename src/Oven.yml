@@ -13,13 +13,13 @@ OvenUI:
     done: "lime_stained_glass_pane"
   Fuel:
     slot: 14
-    display: "air"
+    display: "minecart"
   Input:
     slot: 12
     display: "air"
   Output:
     slot: 31
-    display: "minecart"
+    display: "air"
     
 OvenSettings:
   CookTime: 8

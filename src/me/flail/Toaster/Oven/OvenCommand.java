@@ -1,8 +1,8 @@
-package me.flail.Toaster.Oven;
+package me.flail.toaster.Oven;
 
 import org.bukkit.command.CommandSender;
 
-import me.flail.microtools.tools.Logger;
+import me.flail.toaster.Utilities.Logger;
 
 public class OvenCommand extends Logger {
 

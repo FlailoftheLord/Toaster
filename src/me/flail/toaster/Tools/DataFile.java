@@ -1,4 +1,4 @@
-package me.flail.microtools.tools;
+package me.flail.toaster.Tools;
 
 import java.io.File;
 import java.util.List;
@@ -7,22 +7,38 @@ import java.util.Set;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import me.flail.toaster.Utilities.Logger;
+
 /**
  * A super-inflated, insanely overrated data handler for YAML files.
  * 
  * @author FlailoftheLord
  */
 public class DataFile extends Logger {
-	private File file;
-	private FileConfiguration config = new YamlConfiguration();
+	private static File file;
+	private static FileConfiguration config = new YamlConfiguration();
 
 	public DataFile(String path) {
+
+		file(plugin.getDataFolder() + "/" + path);
+	}
+
+	public DataFile(String path, boolean isExternal) {
+		if (!isExternal) {
+			new DataFile(path);
+			return;
+		}
+
+		file(path);
+	}
+
+	protected void file(String filePath) {
 		try {
-			file = new File(plugin.getDataFolder() + "/" + path);
+			file = new File(filePath);
 			if (!file.exists()) {
 
 				try {
-					plugin.saveResource(path, false);
+					plugin.saveResource(filePath, false);
 				} catch (Throwable t) {
 					file.createNewFile();
 				}
@@ -32,6 +48,7 @@ public class DataFile extends Logger {
 			config.load(file);
 		} catch (Exception e) {
 		}
+
 	}
 
 	public String name() {

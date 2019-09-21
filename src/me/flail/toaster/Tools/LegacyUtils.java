@@ -1,11 +1,11 @@
-package me.flail.microtools.tools;
+package me.flail.toaster.Tools;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import me.flail.Toaster.Toaster;
+import me.flail.toaster.Toaster;
 
 public class LegacyUtils {
 	protected static Toaster plugin = Toaster.getPlugin(Toaster.class);
